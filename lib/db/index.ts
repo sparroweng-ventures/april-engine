@@ -40,7 +40,7 @@ const createDatabase = (url: string) => {
   const sslConfig =
     process.env.DATABASE_SSL_DISABLED === 'true'
       ? false // Disable SSL entirely for local PostgreSQL
-      : { rejectUnauthorized: true } // Enable SSL with verification for cloud DBs
+      : { rejectUnauthorized: false } // Enable SSL with verification for cloud DBs
 
   const client = postgres(url, {
     ssl: sslConfig,
