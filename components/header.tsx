@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
                 Library
               </Button>
             )}
-            <div className={cn(open && user ? 'md:hidden' : undefined)}>
+            <div className="md:hidden">
               {user ? <UserMenu user={user} /> : <GuestMenu />}
             </div>
           </div>
