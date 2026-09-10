@@ -438,13 +438,20 @@ export function ChatPanel({
       )}
     >
       {messages.length === 0 && (
-        <div className="mb-6 md:mb-10 flex flex-col items-center gap-2 md:gap-4">
-          <IconBlinkingLogo className="size-12" />
-          <h1 className="text-xl md:text-2xl font-medium text-foreground">
-            What would you like to know?
-          </h1>
-        </div>
-      )}
+  <div className="mb-7 md:mb-10 flex flex-col items-center gap-3 text-center">
+    <IconBlinkingLogo className="size-11 md:size-12" />
+
+    <div className="space-y-2">
+      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-foreground">
+        What are you researching?
+      </h1>
+
+      <p className="text-sm md:text-base text-muted-foreground">
+        Search the web, compare sources, and get a cited answer.
+      </p>
+    </div>
+  </div>
+)}
       {uploadedFiles.length > 0 && (
         <UploadedFileList files={uploadedFiles} onRemove={handleFileRemove} />
       )}
@@ -591,12 +598,12 @@ export function ChatPanel({
         )}
 
         <div
-          className={cn(
-            'relative flex w-full flex-col gap-2 rounded-3xl border border-input bg-muted transition-[box-shadow] duration-[140ms] ease-[var(--motion-ease-out)]',
-            isInputFocused &&
-              'ring-1 ring-ring/20 ring-offset-1 ring-offset-background/50'
-          )}
-        >
+  className={cn(
+    'relative flex w-full flex-col gap-2 rounded-[28px] border border-white/[0.08] bg-[#12170F]/95 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition-all duration-[180ms] ease-[var(--motion-ease-out)]',
+    isInputFocused &&
+      'border-[#849E16]/40 shadow-[0_20px_70px_rgba(132,158,22,0.10)] ring-1 ring-[#849E16]/20'
+  )}
+>
           {contentCards.length > 0 && (
             <div className="flex flex-col gap-1.5 px-3 pt-3">
               {contentCards.map((card, i) => (
@@ -762,7 +769,7 @@ export function ChatPanel({
             spellCheck={false}
             value={input}
             disabled={isLoading || isToolInvocationInProgress()}
-            className="resize-none w-full min-h-12 bg-transparent border-0 p-3 md:p-4 text-sm placeholder:text-muted-foreground focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+            className="resize-none w-full min-h-14 bg-transparent border-0 px-4 pt-4 pb-2 md:px-5 md:pt-5 md:pb-3 text-[15px] md:text-base text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
             onChange={handleInputChange}
             onPaste={e => {
               const text = e.clipboardData.getData('text')
@@ -920,7 +927,7 @@ export function ChatPanel({
                 size={'icon'}
                 className={cn(
                   isLoading && 'animate-pulse',
-                  'size-8 md:size-10 rounded-full'
+                  'size-8 md:size-10 rounded-full bg-[#849E16] text-[#F4F4EC] hover:bg-[#96B21A] hover:text-white'
                 )}
                 disabled={
                   (!hasPendingInput && !isLoading) || !hasAvailableModels
