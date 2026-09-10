@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 
 import { deleteChat } from '@/lib/actions/chat'
 import { Chat as DBChat } from '@/lib/db/schema'
+import { SHORTCUT_EVENTS } from '@/lib/keyboard-shortcuts'
 
 import {
   AlertDialog,
@@ -100,7 +101,19 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
       if (result?.success) {
         toast.success('Chat deleted')
         if (isActive) {
-          router.push('/')
+          const resetEvent = new CustomEvent(SHORTCUT_EVENTS.newChat, {
+            cancelable: true
+          })
+
+          // Reset the currently visible Chat instance before leaving the
+          // deleted route. This prevents Next.js component caching from
+          // leaving the deleted chat's messages on screen.
+          const wasHandled = !window.dispatchEvent(resetEvent)
+
+          // Fallback for pages where ChatPanel is not mounted.
+          if (!wasHandled) {
+            router.push('/')
+          }
         }
         window.dispatchEvent(new CustomEvent('chat-history-updated'))
       } else if (result?.error) {
@@ -119,13 +132,13 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
       <SidebarMenuButton
         asChild
         isActive={isActive}
-        className="h-auto flex-col gap-0.5 items-start p-2 pr-8"
+        className="group h-auto min-h-12 flex-col items-start gap-1 rounded-xl border border-transparent px-2.5 py-2 pr-9 transition-all hover:border-sidebar-border/55 hover:bg-sidebar-accent/45 data-[active=true]:border-primary/15 data-[active=true]:bg-primary/10 data-[active=true]:shadow-sm"
       >
         <Link href={path}>
-          <div className="text-xs font-medium truncate select-none w-full">
+          <div className="w-full truncate select-none text-xs font-medium leading-4 text-sidebar-foreground/90">
             {chat.title}
           </div>
-          <div className="text-xs text-muted-foreground w-full">
+          <div className="w-full truncate text-[10px] font-medium text-sidebar-foreground/40">
             {formatDateWithTime(chat.createdAt)}
           </div>
         </Link>
@@ -133,7 +146,7 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
 
       <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuAction className="size-7 p-1 mr-1">
+          <SidebarMenuAction className="mr-1 size-7 rounded-lg p-1 text-sidebar-foreground/45 opacity-0 transition-opacity group-hover/menu-item:opacity-100 data-[state=open]:opacity-100">
             <MoreHorizontal size={16} />
             <span className="sr-only">Chat Actions</span>
           </SidebarMenuAction>
