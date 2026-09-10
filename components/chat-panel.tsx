@@ -599,9 +599,9 @@ export function ChatPanel({
 
         <div
   className={cn(
-    'relative flex w-full flex-col gap-2 rounded-[28px] border border-white/[0.08] bg-[#12170F]/95 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition-all duration-[180ms] ease-[var(--motion-ease-out)]',
+    'relative flex w-full flex-col gap-2 rounded-[28px] border border-border/80 bg-gradient-to-br from-card via-card to-accent/25 shadow-lg transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#1B2413]',
     isInputFocused &&
-      'border-[#849E16]/40 shadow-[0_20px_70px_rgba(132,158,22,0.10)] ring-1 ring-[#849E16]/20'
+      'border-primary/40 shadow-[0_20px_70px_rgba(132,158,22,0.12)] ring-1 ring-primary/20 dark:border-[#849E16]/40 dark:ring-[#849E16]/20'
   )}
 >
           {contentCards.length > 0 && (
@@ -927,7 +927,7 @@ export function ChatPanel({
                 size={'icon'}
                 className={cn(
                   isLoading && 'animate-pulse',
-                  'size-8 md:size-10 rounded-full bg-[#849E16] text-[#F4F4EC] hover:bg-[#96B21A] hover:text-white'
+                  'size-8 md:size-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-sm hover:from-primary/90 hover:to-primary/70'
                 )}
                 disabled={
                   (!hasPendingInput && !isLoading) || !hasAvailableModels
