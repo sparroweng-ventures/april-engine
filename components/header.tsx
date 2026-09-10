@@ -47,6 +47,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
             <Button
               variant="outline"
               size="sm"
+              className="rounded-full border-border/70 bg-card/45 px-3 shadow-sm backdrop-blur-sm hover:bg-card"
               onClick={() => setFeedbackOpen(true)}
             >
               Feedback
@@ -56,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5"
+              className="gap-1.5 rounded-full border-border/70 bg-card/45 px-3 shadow-sm backdrop-blur-sm hover:bg-card"
               onClick={() => {
                 toggleLibrary()
                 captureClient(
