@@ -4,7 +4,6 @@ import type { StreamTextOnErrorCallback } from 'ai'
 import { consumeStream, convertToModelMessages, smoothStream } from 'ai'
 
 import { researcher } from '@/lib/agents/researcher'
-import { getObjectBytes } from '@/lib/storage/r2-client'
 import {
   createPublicErrorResponse,
   serializePublicError
@@ -55,65 +54,6 @@ import { langfuseSpanProcessor } from '@/instrumentation'
 
 // Constants
 const DEFAULT_CHAT_TITLE = 'Untitled'
-
-/**
- * OpenAI PDF input requires inline bytes rather than a remote PDF URL.
- * The UI/history can keep using signed URLs, while the model receives the
- * private file bytes only for the generation request.
- */
-async function inlinePdfAttachmentsForModel(
-  uiMessages: any[],
-  modelMessages: any[]
-) {
-  const bytesBySignedUrl = new Map<string, Uint8Array>()
-
-  for (const message of uiMessages) {
-    for (const part of message?.parts ?? []) {
-      if (
-        part?.type !== 'file' ||
-        part?.mediaType !== 'application/pdf' ||
-        !part?.key ||
-        !part?.url
-      ) {
-        continue
-      }
-
-      if (!bytesBySignedUrl.has(part.url)) {
-        bytesBySignedUrl.set(part.url, await getObjectBytes(part.key))
-      }
-    }
-  }
-
-  if (bytesBySignedUrl.size === 0) return modelMessages
-
-  return modelMessages.map(message => {
-    if (!Array.isArray(message?.content)) return message
-
-    return {
-      ...message,
-      content: message.content.map((part: any) => {
-        if (
-          part?.type !== 'file' ||
-          part?.mediaType !== 'application/pdf' ||
-          part?.data?.type !== 'url'
-        ) {
-          return part
-        }
-
-        const bytes = bytesBySignedUrl.get(part.data.url.toString())
-        if (!bytes) return part
-
-        return {
-          ...part,
-          data: {
-            type: 'data',
-            data: bytes
-          }
-        }
-      })
-    }
-  })
-}
 
 export async function createChatStreamResponse(
   config: BaseStreamConfig
@@ -292,13 +232,6 @@ export async function createChatStreamResponse(
         convertDataPart
       })
 
-      // OpenAI's PDF adapter does not accept remote PDF URLs. Convert only
-      // stored PDFs to inline bytes for the provider request.
-      modelMessages = await inlinePdfAttachmentsForModel(
-        messagesToConvert,
-        modelMessages
-      )
-
       streamErrorStage = 'truncate-messages'
       if (
         shouldTruncateMessages(modelMessages, model, attachmentTokenEstimates)
@@ -349,6 +282,12 @@ export async function createChatStreamResponse(
           streamError = error
           streamErrorWasCancelled = abortSignal?.aborted ?? false
           streamErrorPhase = 'generation'
+
+          // Log the original provider/AI SDK error before it is converted into
+          // April Engine's safe public error message. This is intentionally
+          // server-only and does not expose secrets to the browser.
+          logAPICallErrorDiagnostics(error)
+          console.error('[Researcher stream provider error]', error)
         },
         experimental_transform: smoothStream({ chunking: 'word' }),
         ...(isUsageLogging() && {
