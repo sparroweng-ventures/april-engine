@@ -166,8 +166,8 @@ export async function getSignedFileUrl(
 }
 
 /**
- * Reads a private stored object into memory for providers that require
- * inline file bytes instead of a remote URL (notably OpenAI PDF input).
+ * Read a private object as bytes for AI providers that need inline file data.
+ * The object never has to be made public.
  */
 export async function getObjectBytes(key: string): Promise<Uint8Array> {
   const normalizedKey = normalizeObjectKey(key)
@@ -186,15 +186,7 @@ export async function getObjectBytes(key: string): Promise<Uint8Array> {
     throw new Error('Stored file has no body')
   }
 
-  const body = response.Body as {
-    transformToByteArray?: () => Promise<Uint8Array>
-  }
-
-  if (typeof body.transformToByteArray !== 'function') {
-    throw new Error('Stored file body cannot be converted to bytes')
-  }
-
-  return body.transformToByteArray()
+  return response.Body.transformToByteArray()
 }
 
 /**
