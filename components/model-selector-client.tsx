@@ -99,7 +99,7 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
     return (
       <Button
         variant="outline"
-        className="h-auto gap-1 rounded-full border-none bg-muted px-3 py-2 text-sm shadow-none transition-[background-color,color,box-shadow,transform]"
+        className="h-auto gap-1 rounded-full border border-border/65 bg-background/50 px-3 py-2 text-sm shadow-sm backdrop-blur-sm transition-[background-color,color,box-shadow,transform] hover:bg-background hover:shadow-md"
         disabled
         title="No enabled models are available"
       >
@@ -121,7 +121,7 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="h-auto gap-1 rounded-full border-none bg-muted px-3 py-2 text-sm shadow-none transition-[background-color,color,box-shadow,transform]"
+          className="h-auto gap-1 rounded-full border border-border/65 bg-background/50 px-3 py-2 text-sm shadow-sm backdrop-blur-sm transition-[background-color,color,box-shadow,transform] hover:bg-background hover:shadow-md"
         >
           <ProviderLogo providerId={selectedModel.providerId} />
           <span className="truncate max-w-40 text-xs font-medium">
