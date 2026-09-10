@@ -200,8 +200,8 @@ export function ActionButtons({
                   variant="outline"
                   size="sm"
                   className={cn(
-                    'flex items-center gap-2 whitespace-nowrap rounded-full',
-                    'text-xs sm:text-sm px-3 sm:px-4'
+                    'flex items-center gap-2 whitespace-nowrap rounded-full border-border/70 bg-card/45 shadow-sm backdrop-blur-sm transition-all',
+                    'text-xs sm:text-sm px-3 sm:px-4 hover:border-primary/30 hover:bg-card hover:shadow-md'
                   )}
                   onClick={() => handleCategoryClick(category)}
                 >
@@ -226,8 +226,8 @@ export function ActionButtons({
                 key={index}
                 type="button"
                 className={cn(
-                  'w-full rounded-md px-3 py-2 text-left text-sm',
-                  'transition-colors duration-[140ms] ease-[var(--motion-ease-out)] hover:bg-muted',
+                  'w-full rounded-xl border border-transparent px-3 py-2.5 text-left text-sm',
+                  'transition-all duration-[140ms] ease-[var(--motion-ease-out)] hover:border-border/70 hover:bg-card/60 hover:shadow-sm',
                   'flex items-center gap-2 group'
                 )}
                 onClick={() => handlePromptClick(prompt)}
