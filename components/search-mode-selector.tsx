@@ -105,7 +105,7 @@ export function SearchModeSelector({
             <Button
               variant="outline"
               size="sm"
-              className="gap-1 rounded-full text-xs shadow-none transition-[background-color,color,box-shadow,transform]"
+              className="gap-1 rounded-full border-border/65 bg-background/50 text-xs shadow-sm backdrop-blur-sm transition-[background-color,color,box-shadow,transform]"
             >
               {SelectedIcon && (
                 <SelectedIcon
@@ -157,10 +157,10 @@ export function SearchModeSelector({
 
       {/* Desktop Toggle */}
       <div className="hidden sm:block">
-        <div className="relative inline-flex items-center rounded-full bg-background border p-1">
+        <div className="relative inline-flex items-center rounded-full border border-border/65 bg-background/45 p-1 shadow-sm backdrop-blur-sm">
           {/* Animated background indicator */}
           <div
-            className="absolute inset-1 rounded-full bg-muted transition-[transform,width] duration-[180ms] ease-[var(--motion-ease-in-out)]"
+            className="absolute inset-1 rounded-full bg-accent/70 shadow-[0_1px_4px_rgba(20,24,10,0.08)] transition-[transform,width] duration-[180ms] ease-[var(--motion-ease-in-out)]"
             style={{
               width: `calc(${100 / modeCount}% - 4px)`,
               transform: `translateX(${selectedIndex * 100}%)`
@@ -190,7 +190,7 @@ export function SearchModeSelector({
                       type="button"
                       onClick={() => handleModeSelect(config.value)}
                       className={cn(
-                        'relative z-10 flex-1 items-center justify-center rounded-full px-3 py-2 transition-colors duration-[140ms] ease-[var(--motion-ease-out)]',
+                        'relative z-10 flex-1 items-center justify-center rounded-full px-3 py-2 transition-all duration-[140ms] ease-[var(--motion-ease-out)]',
                         isSelected
                           ? 'text-foreground'
                           : 'text-muted-foreground hover:text-foreground/80'
