@@ -79,7 +79,7 @@ export function ClearHistoryAction({ empty }: ClearHistoryActionProps) {
   return (
     <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
       <DropdownMenuTrigger asChild>
-        <SidebarGroupAction disabled={empty} className="static size-7 rounded-lg p-1 text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground">
+        <SidebarGroupAction disabled={empty} className="static size-7 p-1">
           <MoreHorizontal size={16} />
           <span className="sr-only">History Actions</span>
         </SidebarGroupAction>
