@@ -14,14 +14,16 @@ const isTest = process.env.NODE_ENV === 'test'
 // Prefer restricted user for application runtime
 const restrictedDatabaseUrl =
   process.env.DATABASE_RESTRICTED_URL?.trim() || undefined
+const postgresUrl = process.env.POSTGRES_URL?.trim() || undefined
 const databaseUrl = process.env.DATABASE_URL?.trim() || undefined
 const connectionString =
-  restrictedDatabaseUrl ?? // Prefer restricted user
-  databaseUrl ??
+  restrictedDatabaseUrl ?? // Prefer explicitly configured restricted user
+  postgresUrl ?? // Prefer Vercel/Supabase managed pooled connection when available
+  databaseUrl ?? // Generic fallback for local/other deployments
   (isTest ? 'postgres://user:pass@localhost:5432/testdb' : undefined)
 
 const databaseErrorMessage =
-  'DATABASE_URL or DATABASE_RESTRICTED_URL environment variable is not set'
+  'POSTGRES_URL, DATABASE_URL, or DATABASE_RESTRICTED_URL environment variable is not set'
 
 const createDatabase = (url: string) => {
   // Log which connection is being used (for debugging)
@@ -29,8 +31,10 @@ const createDatabase = (url: string) => {
     console.log(
       '[DB] Using connection:',
       restrictedDatabaseUrl
-        ? 'Restricted User (RLS Active)'
-        : 'Owner User (RLS Bypassed)'
+        ? 'DATABASE_RESTRICTED_URL'
+        : postgresUrl
+          ? 'POSTGRES_URL (managed pooled connection)'
+          : 'DATABASE_URL'
     )
   }
 
