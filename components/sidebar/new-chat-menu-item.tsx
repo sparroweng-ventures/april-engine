@@ -9,15 +9,10 @@ import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
 export function NewChatMenuItem() {
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        className="h-11 rounded-xl bg-primary px-3 font-medium text-primary-foreground shadow-sm hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/85"
-      >
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex size-6 items-center justify-center rounded-lg bg-white/12">
-            <Plus className="size-4" />
-          </span>
-          <span>New search</span>
+      <SidebarMenuButton asChild>
+        <Link href="/" className="flex items-center gap-2">
+          <Plus className="size-4" />
+          <span>New</span>
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
