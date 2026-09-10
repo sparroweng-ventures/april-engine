@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 
 import { deleteAccount } from '@/lib/actions/account'
 import { createClient } from '@/lib/supabase/client'
+import { cn } from '@/lib/utils'
 
 import {
   AlertDialog,
@@ -26,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -64,6 +66,18 @@ export function AccountSettingsDialog({
 
   const userName =
     user.user_metadata?.full_name || user.user_metadata?.name || 'User'
+  const avatarUrl =
+    user.user_metadata?.avatar_url || user.user_metadata?.picture
+  const initials = (() => {
+    if (userName && userName !== 'User') {
+      const names = userName.trim().split(/\s+/)
+      if (names.length > 1) {
+        return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
+      }
+      return userName.substring(0, 2).toUpperCase()
+    }
+    return user.email?.split('@')[0].substring(0, 2).toUpperCase() || 'U'
+  })()
 
   const handleDeleteAccount = () => {
     startDeleteTransition(async () => {
@@ -100,32 +114,39 @@ export function AccountSettingsDialog({
         }
       }}
     >
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Account</DialogTitle>
-          <DialogDescription>
-            Manage your account preferences and data.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="overflow-hidden p-0 sm:max-w-lg">
+        <div className="border-b border-border/60 bg-muted/20 px-6 pb-5 pt-6">
+          <DialogHeader className="text-left">
+            <DialogTitle className="text-lg tracking-[-0.02em]">
+              Account & preferences
+            </DialogTitle>
+            <DialogDescription>
+              Manage your April Engine profile and appearance.
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="grid gap-6">
-          <section className="grid gap-3">
-            <div className="grid gap-1">
-              <h3 className="text-sm font-medium">Profile</h3>
-              <div className="text-sm text-muted-foreground">
-                <p className="truncate">{userName}</p>
-                <p className="truncate">{user.email}</p>
-              </div>
+          <div className="mt-5 flex items-center gap-3 rounded-2xl border border-border/60 bg-background/75 p-3 shadow-sm">
+            <Avatar className="size-11">
+              <AvatarImage src={avatarUrl} alt={userName} />
+              <AvatarFallback className="text-xs font-semibold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">{userName}</p>
+              <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                {user.email}
+              </p>
             </div>
-          </section>
+          </div>
+        </div>
 
-          <Separator />
-
+        <div className="grid gap-6 px-6 py-5">
           <section className="grid gap-3">
             <div className="grid gap-1">
-              <h3 className="text-sm font-medium">Theme</h3>
-              <p className="text-sm text-muted-foreground">
-                Choose how April Engine appears on this device.
+              <h3 className="text-sm font-semibold">Appearance</h3>
+              <p className="text-xs leading-5 text-muted-foreground">
+                Choose how April Engine looks on this device.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -137,13 +158,24 @@ export function AccountSettingsDialog({
                   <Button
                     key={option.value}
                     type="button"
-                    variant={selected ? 'secondary' : 'outline'}
-                    className="h-16 flex-col gap-1.5 px-2"
+                    variant="outline"
+                    className={cn(
+                      'h-20 flex-col gap-2 rounded-xl px-2 shadow-none transition-all',
+                      selected &&
+                        'border-primary/30 bg-primary/10 text-foreground ring-1 ring-primary/10'
+                    )}
                     aria-pressed={selected}
                     onClick={() => setTheme(option.value)}
                   >
-                    <Icon className="size-4" />
-                    <span className="text-xs">{option.label}</span>
+                    <span
+                      className={cn(
+                        'flex size-8 items-center justify-center rounded-lg bg-muted/70',
+                        selected && 'bg-primary/15 text-primary'
+                      )}
+                    >
+                      <Icon className="size-4" />
+                    </span>
+                    <span className="text-xs font-medium">{option.label}</span>
                   </Button>
                 )
               })}
@@ -152,14 +184,12 @@ export function AccountSettingsDialog({
 
           <Separator />
 
-          <section className="grid gap-3">
+          <section className="grid gap-3 rounded-2xl border border-destructive/15 bg-destructive/[0.025] p-4">
             <div className="grid gap-1">
-              <h3 className="text-sm font-medium text-destructive">
-                Delete account
-              </h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="text-sm font-semibold">Delete account</h3>
+              <p className="text-xs leading-5 text-muted-foreground">
                 Permanently delete your account, chat history, and uploaded
-                files. This action cannot be undone.
+                files. This cannot be undone.
               </p>
             </div>
 
@@ -174,8 +204,9 @@ export function AccountSettingsDialog({
               <AlertDialogTrigger asChild>
                 <Button
                   type="button"
-                  variant="destructive"
-                  className="w-fit gap-2"
+                  variant="outline"
+                  size="sm"
+                  className="w-fit gap-2 rounded-lg border-destructive/25 text-destructive hover:bg-destructive/5 hover:text-destructive"
                   disabled={isDeleting}
                 >
                   <Trash2 className="size-4" />
