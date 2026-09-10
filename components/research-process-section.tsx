@@ -322,7 +322,7 @@ export function ResearchProcessSection({
       {segments.map((seg, sidx) => {
         const groups = groupConsecutiveParts(seg)
         const isSingle = groups.length === 1 && groups[0].length === 1
-        const containerClass = cn(!isSingle && 'rounded-lg border bg-card')
+        const containerClass = cn(!isSingle && 'rounded-xl border border-border/60 bg-card/50 shadow-sm overflow-hidden')
 
         // Count total parts in this segment
         const totalParts = seg.length
@@ -380,11 +380,14 @@ export function ResearchProcessSection({
               <CollapsibleTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center px-1 py-0.5 gap-2 text-sm rounded-lg group"
+                  className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent/50 group"
                 >
-                  <Waypoints className="size-4 text-muted-foreground group-hover:text-muted-foreground/70" />
-                  <span className="font-medium text-muted-foreground group-hover:text-muted-foreground/70">
-                    Research Process ({totalParts} steps)
+                  <Waypoints className="size-4 text-primary/70 group-hover:text-primary" />
+                  <span className="font-medium text-foreground/75 group-hover:text-foreground">
+                    Research process
+                  </span>
+                  <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    {totalParts} steps
                   </span>
                   <ChevronDown
                     className={cn(
