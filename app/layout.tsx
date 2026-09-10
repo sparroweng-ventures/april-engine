@@ -29,22 +29,35 @@ const fontSans = FontSans({
 
 const title = 'April Engine'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'AI-powered research and answer engine for searching the web, comparing sources, and getting cited answers.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
-  title,
+  applicationName: 'April Engine',
+  title: {
+    default: title,
+    template: '%s | April Engine'
+  },
   description,
+  icons: {
+    icon: [
+      { url: '/brand/logo-icon.svg', type: 'image/svg+xml' },
+      { url: '/brand/icon-64.png', sizes: '64x64', type: 'image/png' },
+      { url: '/brand/icon-256.png', sizes: '256x256', type: 'image/png' }
+    ],
+    shortcut: '/brand/icon-64.png',
+    apple: '/brand/icon-256.png'
+  },
   openGraph: {
     title,
-    description
+    description,
+    siteName: 'April Engine'
   },
   twitter: {
     title,
     description,
-    card: 'summary_large_image',
-    creator: '@miiura'
-  }
+    card: 'summary'
+  },
+  creator: 'April Engine'
 }
 
 export const viewport: Viewport = {
