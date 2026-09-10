@@ -612,9 +612,9 @@ export function ChatPanel({
 
         <div
   className={cn(
-    'relative flex w-full flex-col gap-2 rounded-[28px] border border-border/80 bg-gradient-to-br from-card via-card to-accent/25 shadow-lg transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#1B2413]',
+    'relative flex w-full flex-col gap-0 overflow-hidden rounded-[30px] border border-border/80 bg-gradient-to-br from-card via-card to-accent/20 shadow-[0_18px_50px_rgba(20,24,10,0.10)] transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#1B2413] dark:shadow-[0_20px_60px_rgba(0,0,0,0.22)]',
     isInputFocused &&
-      'border-primary/40 shadow-[0_20px_70px_rgba(132,158,22,0.12)] ring-1 ring-primary/20 dark:border-[#849E16]/40 dark:ring-[#849E16]/20'
+      'border-primary/45 shadow-[0_22px_75px_rgba(132,158,22,0.14)] ring-1 ring-primary/15 dark:border-[#849E16]/45 dark:ring-[#849E16]/20'
   )}
 >
           {contentCards.length > 0 && (
@@ -782,7 +782,7 @@ export function ChatPanel({
             spellCheck={false}
             value={input}
             disabled={isLoading || isToolInvocationInProgress()}
-            className="resize-none w-full min-h-14 bg-transparent border-0 px-4 pt-4 pb-2 md:px-5 md:pt-5 md:pb-3 text-[15px] md:text-base text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+            className="resize-none w-full min-h-16 bg-transparent border-0 px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4 text-[15px] md:text-base leading-6 text-foreground placeholder:text-muted-foreground/65 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
             onChange={handleInputChange}
             onPaste={e => {
               const text = e.clipboardData.getData('text')
@@ -851,8 +851,8 @@ export function ChatPanel({
           />
 
           {/* Bottom menu area */}
-          <div className="flex items-center justify-between p-2 md:p-3">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between border-t border-border/45 bg-background/15 px-3 py-2.5 md:px-4 md:py-3">
+            <div className="flex items-center gap-1.5">
               {!isGuest && (
                 <div ref={attachmentMenuRef} className="relative">
                   <input
@@ -875,7 +875,7 @@ export function ChatPanel({
                           type="button"
                           variant="outline"
                           size="icon"
-                          className="size-8 rounded-full"
+                          className="size-8 rounded-full border-border/70 bg-background/55 shadow-none transition-all hover:bg-background hover:shadow-sm"
                           aria-label="Add"
                           aria-expanded={isAttachmentMenuOpen}
                           onClick={() => setIsAttachmentMenuOpen(open => !open)}
@@ -919,7 +919,7 @@ export function ChatPanel({
                 onAdaptiveAuthRequired={onAdaptiveModeAuthRequired}
               />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               {!isCloudDeployment && modelSelectorData && (
                 <ModelSelectorClient data={modelSelectorData} />
               )}
@@ -928,7 +928,7 @@ export function ChatPanel({
                   variant="outline"
                   size="icon"
                   onClick={handleNewChat}
-                  className="shrink-0 size-8 md:size-10 rounded-full group"
+                  className="shrink-0 size-8 md:size-10 rounded-full border-border/70 bg-background/55 shadow-none transition-all hover:bg-background hover:shadow-sm group"
                   type="button"
                   disabled={isLoading}
                 >
