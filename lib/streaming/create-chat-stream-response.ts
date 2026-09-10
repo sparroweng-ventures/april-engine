@@ -363,10 +363,6 @@ export async function createChatStreamResponse(
           streamErrorWasCancelled = abortSignal?.aborted ?? false
           streamErrorPhase = 'generation'
 
-          // Preserve April Engine's safe public error while exposing the
-          // original provider error only in server logs for diagnosis.
-          logAPICallErrorDiagnostics(error)
-          console.error('[Researcher stream provider error]', error)
         },
         experimental_transform: smoothStream({ chunking: 'word' }),
         ...(isUsageLogging() && {
