@@ -110,7 +110,8 @@ export function SearchModeSelector({
               {SelectedIcon && (
                 <SelectedIcon
                   className={cn(
-                    'size-3.5 transition-colors',
+                    selectedMode?.value === 'adaptive' ? 'size-5' : 'size-3.5',
+                    'transition-colors',
                     selectedMode?.color
                   )}
                 />
@@ -139,7 +140,11 @@ export function SearchModeSelector({
                   )}
                   <div className="flex items-center gap-2">
                     <ModeIcon
-                      className={cn('size-4 transition-colors', config.color)}
+                      className={cn(
+                        config.value === 'adaptive' ? 'size-5' : 'size-4',
+                        'transition-colors',
+                        config.color
+                      )}
                     />
                     <span className="text-sm font-medium">{config.label}</span>
                   </div>
@@ -200,7 +205,8 @@ export function SearchModeSelector({
                     >
                       <Icon
                         className={cn(
-                          'h-3.5 w-3.5 transition-colors',
+                          config.value === 'adaptive' ? 'size-6' : 'size-3.5',
+                          'transition-colors',
                           isSelected ? config.color : ''
                         )}
                       />
@@ -214,7 +220,12 @@ export function SearchModeSelector({
                   >
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Icon className={cn('size-5', config.color)} />
+                        <Icon
+                          className={cn(
+                            config.value === 'adaptive' ? 'size-6' : 'size-5',
+                            config.color
+                          )}
+                        />
                         <h4 className="text-sm font-semibold">
                           {config.label}
                         </h4>
