@@ -8,7 +8,6 @@ import {
   IconChevronUp as ChevronUp,
   IconLink as Link2,
   IconLogout as LogOut,
-  IconSettings as Settings,
   IconUserCircle as UserRound
 } from '@tabler/icons-react'
 
@@ -148,7 +147,7 @@ export default function UserMenu({ user, variant = 'icon' }: UserMenuProps) {
             }}
           >
             <UserRound className="size-4" />
-            <span>Account & preferences</span>
+            <span>Account & settings</span>
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="rounded-lg">
@@ -160,16 +159,6 @@ export default function UserMenu({ user, variant = 'icon' }: UserMenuProps) {
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="rounded-lg text-muted-foreground"
-            onSelect={event => {
-              event.preventDefault()
-              handleOpenAccount()
-            }}
-          >
-            <Settings className="size-4" />
-            <span>Settings</span>
-          </DropdownMenuItem>
           <DropdownMenuItem
             className="rounded-lg text-destructive focus:text-destructive"
             onClick={handleLogout}
