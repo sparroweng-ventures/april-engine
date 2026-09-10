@@ -76,7 +76,7 @@ export function getR2Client(): S3Client {
   }
 
   _r2Client = new S3Client({
-    region: 'auto',
+    region: process.env.S3_REGION?.trim() || 'auto',
     endpoint: s3Endpoint || `https://${accountId}.r2.cloudflarestorage.com`,
     forcePathStyle: !!s3Endpoint,
     credentials: {
