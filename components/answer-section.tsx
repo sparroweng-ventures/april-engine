@@ -267,11 +267,16 @@ export function AnswerSection({
       showIcon={false}
     >
       {content && (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground/70">
+            <span className="size-1.5 rounded-full bg-primary" />
+            Answer
+          </div>
           <div
             ref={contentRef}
             onMouseUp={updateSelection}
             onKeyUp={updateSelection}
+            className="border-l-2 border-primary/20 pl-4 md:pl-5"
           >
             <MarkdownMessage message={content} citationMaps={citationMaps} />
           </div>
