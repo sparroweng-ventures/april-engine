@@ -119,13 +119,13 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
       <SidebarMenuButton
         asChild
         isActive={isActive}
-        className="h-auto flex-col gap-0.5 items-start p-2 pr-8"
+        className="h-auto min-h-12 flex-col items-start gap-1 rounded-xl px-3 py-2.5 pr-9 text-sidebar-foreground/80 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground data-[active=true]:bg-primary/10 data-[active=true]:text-sidebar-foreground data-[active=true]:shadow-[inset_0_0_0_1px_rgba(132,158,22,0.16)]"
       >
         <Link href={path}>
-          <div className="text-xs font-medium truncate select-none w-full">
+          <div className="w-full truncate select-none text-[12px] font-medium leading-4">
             {chat.title}
           </div>
-          <div className="text-xs text-muted-foreground w-full">
+          <div className="w-full text-[10px] leading-4 text-muted-foreground/80">
             {formatDateWithTime(chat.createdAt)}
           </div>
         </Link>
@@ -133,7 +133,7 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
 
       <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuAction className="size-7 p-1 mr-1">
+          <SidebarMenuAction className="mr-1 size-7 rounded-lg p-1 text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground">
             <MoreHorizontal size={16} />
             <span className="sr-only">Chat Actions</span>
           </SidebarMenuAction>
