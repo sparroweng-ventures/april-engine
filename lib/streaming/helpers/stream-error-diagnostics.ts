@@ -11,6 +11,7 @@ export type StreamErrorStage =
   | 'build-agent'
   | 'transform-messages'
   | 'convert-messages'
+  | 'inline-pdf-attachments'
   | 'truncate-messages'
   | 'start-title-generation'
   | 'start-stream'
