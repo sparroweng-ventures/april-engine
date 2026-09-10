@@ -4,6 +4,7 @@ import type { StreamTextOnErrorCallback } from 'ai'
 import { consumeStream, convertToModelMessages, smoothStream } from 'ai'
 
 import { researcher } from '@/lib/agents/researcher'
+import { getObjectBytes } from '@/lib/storage/r2-client'
 import {
   createPublicErrorResponse,
   serializePublicError
@@ -54,6 +55,79 @@ import { langfuseSpanProcessor } from '@/instrumentation'
 
 // Constants
 const DEFAULT_CHAT_TITLE = 'Untitled'
+
+function getModelFileUrl(data: unknown): string | undefined {
+  if (typeof data === 'string') return data
+  if (data instanceof URL) return data.href
+
+  // Defensive support for the normalized AI SDK representation.
+  if (!data || typeof data !== 'object') return undefined
+  const normalized = data as { type?: unknown; url?: unknown }
+  if (normalized.type !== 'url') return undefined
+  if (normalized.url instanceof URL) return normalized.url.href
+  return typeof normalized.url === 'string' ? normalized.url : undefined
+}
+
+/**
+ * April Engine keeps uploaded files private in object storage. The UI/history
+ * uses short-lived signed URLs, but PDF model input is converted to inline
+ * bytes before generation so OpenAI does not receive a remote PDF URL.
+ */
+async function inlineStoredPdfAttachments(
+  uiMessages: any[],
+  modelMessages: any[]
+) {
+  const keyByUrl = new Map<string, string>()
+
+  for (const message of uiMessages) {
+    for (const part of message?.parts ?? []) {
+      if (
+        part?.type === 'file' &&
+        part?.mediaType === 'application/pdf' &&
+        typeof part?.key === 'string' &&
+        part.key.length > 0 &&
+        typeof part?.url === 'string' &&
+        part.url.length > 0
+      ) {
+        keyByUrl.set(part.url, part.key)
+      }
+    }
+  }
+
+  if (keyByUrl.size === 0) return modelMessages
+
+  const bytesByUrl = new Map<string, Uint8Array>()
+  await Promise.all(
+    Array.from(keyByUrl.entries()).map(async ([url, key]) => {
+      bytesByUrl.set(url, await getObjectBytes(key))
+    })
+  )
+
+  return modelMessages.map(message => {
+    if (!Array.isArray(message?.content)) return message
+
+    return {
+      ...message,
+      content: message.content.map((part: any) => {
+        if (part?.type !== 'file' || part?.mediaType !== 'application/pdf') {
+          return part
+        }
+
+        const url = getModelFileUrl(part.data)
+        if (!url) return part
+
+        const bytes = bytesByUrl.get(url)
+        if (!bytes) return part
+
+        // ModelMessage file data accepts inline binary data directly.
+        return {
+          ...part,
+          data: bytes
+        }
+      })
+    }
+  })
+}
 
 export async function createChatStreamResponse(
   config: BaseStreamConfig
@@ -232,6 +306,12 @@ export async function createChatStreamResponse(
         convertDataPart
       })
 
+      streamErrorStage = 'inline-pdf-attachments'
+      modelMessages = await inlineStoredPdfAttachments(
+        messagesToConvert,
+        modelMessages
+      )
+
       streamErrorStage = 'truncate-messages'
       if (
         shouldTruncateMessages(modelMessages, model, attachmentTokenEstimates)
@@ -283,9 +363,8 @@ export async function createChatStreamResponse(
           streamErrorWasCancelled = abortSignal?.aborted ?? false
           streamErrorPhase = 'generation'
 
-          // Log the original provider/AI SDK error before it is converted into
-          // April Engine's safe public error message. This is intentionally
-          // server-only and does not expose secrets to the browser.
+          // Preserve April Engine's safe public error while exposing the
+          // original provider error only in server logs for diagnosis.
           logAPICallErrorDiagnostics(error)
           console.error('[Researcher stream provider error]', error)
         },
