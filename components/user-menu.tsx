@@ -5,12 +5,15 @@ import { useRouter } from 'next/navigation'
 
 import type { User } from '@supabase/supabase-js'
 import {
+  IconChevronUp as ChevronUp,
   IconLink as Link2,
   IconLogout as LogOut,
+  IconSettings as Settings,
   IconUserCircle as UserRound
 } from '@tabler/icons-react'
 
 import { createClient } from '@/lib/supabase/client'
+import { cn } from '@/lib/utils'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -32,9 +35,10 @@ import { ExternalLinkItems } from './external-link-items'
 
 interface UserMenuProps {
   user: User
+  variant?: 'icon' | 'sidebar'
 }
 
-export default function UserMenu({ user }: UserMenuProps) {
+export default function UserMenu({ user, variant = 'icon' }: UserMenuProps) {
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
@@ -69,42 +73,85 @@ export default function UserMenu({ user }: UserMenuProps) {
     window.setTimeout(() => setAccountOpen(true), 0)
   }
 
+  const avatar = (
+    <Avatar className={cn(variant === 'sidebar' ? 'size-9' : 'size-6')}>
+      <AvatarImage src={avatarUrl} alt={userName} />
+      <AvatarFallback className="text-[11px] font-semibold">
+        {getInitials(userName, user.email)}
+      </AvatarFallback>
+    </Avatar>
+  )
+
   return (
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative size-6 rounded-full">
-            <Avatar className="size-6">
-              <AvatarImage src={avatarUrl} alt={userName} />
-              <AvatarFallback>
-                {getInitials(userName, user.email)}
-              </AvatarFallback>
-            </Avatar>
-          </Button>
+          {variant === 'sidebar' ? (
+            <button
+              type="button"
+              className="flex w-full items-center gap-2.5 rounded-xl border border-sidebar-border/60 bg-sidebar-accent/25 p-2 text-left shadow-sm transition-colors hover:bg-sidebar-accent/50"
+            >
+              {avatar}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-xs font-semibold text-sidebar-foreground">
+                  {userName}
+                </span>
+                <span className="mt-0.5 block truncate text-[10px] text-sidebar-foreground/45">
+                  {user.email}
+                </span>
+              </span>
+              <ChevronUp className="size-4 shrink-0 text-sidebar-foreground/40" />
+            </button>
+          ) : (
+            <Button
+              variant="ghost"
+              className="relative size-8 rounded-full p-0"
+              aria-label="Open account menu"
+            >
+              {avatar}
+            </Button>
+          )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-60" align="end" forceMount>
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none truncate">
-                {userName}
-              </p>
-              <p className="text-xs leading-none text-muted-foreground truncate">
-                {user.email}
-              </p>
+
+        <DropdownMenuContent
+          className="w-64 rounded-xl border-border/70 p-1.5 shadow-xl"
+          align={variant === 'sidebar' ? 'start' : 'end'}
+          side={variant === 'sidebar' ? 'top' : 'bottom'}
+          sideOffset={8}
+          forceMount
+        >
+          <DropdownMenuLabel className="px-2.5 py-2 font-normal">
+            <div className="flex items-center gap-2.5">
+              <Avatar className="size-9">
+                <AvatarImage src={avatarUrl} alt={userName} />
+                <AvatarFallback className="text-[11px] font-semibold">
+                  {getInitials(userName, user.email)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium leading-none">
+                  {userName}
+                </p>
+                <p className="mt-1 truncate text-xs text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
             </div>
           </DropdownMenuLabel>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem
+            className="rounded-lg"
             onSelect={event => {
               event.preventDefault()
               handleOpenAccount()
             }}
           >
             <UserRound className="size-4" />
-            <span>Account</span>
+            <span>Account & preferences</span>
           </DropdownMenuItem>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger className="rounded-lg">
               <Link2 className="size-4" />
               <span>Links</span>
             </DropdownMenuSubTrigger>
@@ -113,12 +160,26 @@ export default function UserMenu({ user }: UserMenuProps) {
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem
+            className="rounded-lg text-muted-foreground"
+            onSelect={event => {
+              event.preventDefault()
+              handleOpenAccount()
+            }}
+          >
+            <Settings className="size-4" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="rounded-lg text-destructive focus:text-destructive"
+            onClick={handleLogout}
+          >
             <LogOut className="size-4" />
-            <span>Logout</span>
+            <span>Log out</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
       <AccountSettingsDialog
         open={accountOpen}
         onOpenChange={setAccountOpen}
