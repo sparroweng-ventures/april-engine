@@ -49,7 +49,7 @@ export function MarkdownMessage({
     <CitationProvider citationMaps={citationMaps}>
       <div
         className={cn(
-          'prose-sm prose-neutral prose-a:text-accent-foreground/50',
+          'prose-sm prose-neutral max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-h2:mt-7 prose-h2:mb-3 prose-h3:mt-6 prose-h3:mb-2 prose-p:leading-7 prose-p:text-foreground/90 prose-li:leading-7 prose-strong:text-foreground prose-a:text-primary prose-a:decoration-primary/30 prose-a:underline-offset-4 hover:prose-a:decoration-primary/60',
           className
         )}
       >
