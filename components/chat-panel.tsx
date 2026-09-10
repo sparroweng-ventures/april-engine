@@ -438,15 +438,21 @@ export function ChatPanel({
       )}
     >
       {messages.length === 0 && (
-  <div className="mb-7 md:mb-10 flex flex-col items-center gap-3 text-center">
-    <IconBlinkingLogo className="size-11 md:size-12" />
+  <div className="mb-8 md:mb-11 flex flex-col items-center gap-4 text-center">
+    <div className="flex size-12 md:size-14 items-center justify-center rounded-2xl border border-border/70 bg-card/60 shadow-sm backdrop-blur-sm">
+      <IconBlinkingLogo className="size-8 md:size-9" />
+    </div>
 
-    <div className="space-y-2">
-      <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-foreground">
-        What are you researching?
+    <div className="space-y-3">
+      <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.22em] text-primary/80">
+        AI research engine
+      </div>
+
+      <h1 className="mx-auto max-w-3xl text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.98] tracking-[-0.045em] text-foreground">
+        What are you <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">researching?</span>
       </h1>
 
-      <p className="text-sm md:text-base text-muted-foreground">
+      <p className="mx-auto max-w-xl text-sm md:text-base leading-7 text-muted-foreground">
         Search the web, compare sources, and get a cited answer.
       </p>
     </div>
