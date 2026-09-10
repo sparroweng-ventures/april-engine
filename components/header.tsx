@@ -53,24 +53,28 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
               Feedback
             </Button>
           )}
-          {user && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 rounded-full border-border/70 bg-card/45 px-3 shadow-sm backdrop-blur-sm hover:bg-card"
-              onClick={() => {
-                toggleLibrary()
-                captureClient(
-                  libraryOpen ? 'library_closed' : 'library_opened',
-                  { source: 'header' }
-                )
-              }}
-            >
-              <LibraryIcon className="size-4" />
-              Library
-            </Button>
-          )}
-          {user ? <UserMenu user={user} /> : <GuestMenu />}
+          <div className="flex items-center gap-2">
+            {user && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-1.5 rounded-full border-border/70 bg-card/45 px-3 shadow-sm backdrop-blur-sm hover:bg-card"
+                onClick={() => {
+                  toggleLibrary()
+                  captureClient(
+                    libraryOpen ? 'library_closed' : 'library_opened',
+                    { source: 'header' }
+                  )
+                }}
+              >
+                <LibraryIcon className="size-4" />
+                Library
+              </Button>
+            )}
+            <div className={cn(open && user ? 'md:hidden' : undefined)}>
+              {user ? <UserMenu user={user} /> : <GuestMenu />}
+            </div>
+          </div>
         </div>
       </header>
 
