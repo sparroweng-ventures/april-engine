@@ -166,6 +166,38 @@ export async function getSignedFileUrl(
 }
 
 /**
+ * Reads a private stored object into memory for providers that require
+ * inline file bytes instead of a remote URL (notably OpenAI PDF input).
+ */
+export async function getObjectBytes(key: string): Promise<Uint8Array> {
+  const normalizedKey = normalizeObjectKey(key)
+  if (!normalizedKey) {
+    throw new Error('Cannot read an empty object key')
+  }
+
+  const response = await getR2Client().send(
+    new GetObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: normalizedKey
+    })
+  )
+
+  if (!response.Body) {
+    throw new Error('Stored file has no body')
+  }
+
+  const body = response.Body as {
+    transformToByteArray?: () => Promise<Uint8Array>
+  }
+
+  if (typeof body.transformToByteArray !== 'function') {
+    throw new Error('Stored file body cannot be converted to bytes')
+  }
+
+  return body.transformToByteArray()
+}
+
+/**
  * MD5 of a stored object's bytes, or null when it cannot be established.
  *
  * S3 and R2 set the ETag of a single-part upload to the MD5 of the body, which
