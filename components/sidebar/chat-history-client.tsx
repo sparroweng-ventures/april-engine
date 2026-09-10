@@ -81,7 +81,7 @@ export function ChatHistoryClient() {
       setNextOffset(newNextOffset)
     } catch (error) {
       console.error('Failed to load more chats:', error)
-      toast.error('Failed to load more chat history.')
+      toast.error('Failed to load chat history.')
       setNextOffset(null)
     } finally {
       setIsLoading(false)
@@ -113,20 +113,23 @@ export function ChatHistoryClient() {
   const isHistoryEmpty = !isLoading && !chats.length && nextOffset === null
 
   return (
-    <div className="flex flex-col flex-1 h-full">
-      <SidebarGroup>
-        <div className="flex items-center justify-between w-full">
-          <SidebarGroupLabel className="p-0">History</SidebarGroupLabel>
+    <div className="flex h-full min-h-0 flex-1 flex-col">
+      <SidebarGroup className="px-1 pb-1 pt-1">
+        <div className="flex w-full items-center justify-between">
+          <SidebarGroupLabel className="h-auto p-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/75">
+            Recent research
+          </SidebarGroupLabel>
           <ClearHistoryAction empty={isHistoryEmpty} />
         </div>
       </SidebarGroup>
-      <div className="flex-1 overflow-y-auto mb-2 relative">
+
+      <div className="relative min-h-0 flex-1 overflow-y-auto pr-0.5">
         {isHistoryEmpty && !isPending ? (
-          <div className="px-2 text-foreground/30 text-sm text-center py-4">
-            No search history
+          <div className="mx-1 mt-2 rounded-xl border border-dashed border-sidebar-border/80 px-3 py-4 text-center text-xs leading-5 text-muted-foreground">
+            Your recent searches will appear here.
           </div>
         ) : (
-          <SidebarMenu>
+          <SidebarMenu className="gap-1">
             {chats.map(
               (chat: DBChat) =>
                 chat && <ChatMenuItem key={chat.id} chat={chat} />
