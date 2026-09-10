@@ -1,11 +1,14 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 
+import type { User } from '@supabase/supabase-js'
+
 import { cn } from '@/lib/utils'
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarRail,
@@ -16,27 +19,54 @@ import { ChatHistorySection } from './sidebar/chat-history-section'
 import { ChatHistorySkeleton } from './sidebar/chat-history-skeleton'
 import { NewChatMenuItem } from './sidebar/new-chat-menu-item'
 import { IconLogo } from './ui/icons'
+import UserMenu from './user-menu'
 
-export default function AppSidebar() {
+interface AppSidebarProps {
+  user?: User | null
+}
+
+export default function AppSidebar({ user }: AppSidebarProps) {
   return (
-    <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
-      <SidebarHeader className="flex flex-row justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 px-2 py-3">
-          <IconLogo className={cn('size-5')} />
-          <span className="font-semibold text-sm">April Engine</span>
+    <Sidebar
+      side="left"
+      variant="sidebar"
+      collapsible="offcanvas"
+      className="border-r border-sidebar-border/70"
+    >
+      <SidebarHeader className="flex min-h-16 flex-row items-center justify-between border-b border-sidebar-border/50 px-2">
+        <Link
+          href="/"
+          className="group flex min-w-0 items-center gap-2.5 rounded-xl px-2 py-2 transition-colors hover:bg-sidebar-accent/45"
+        >
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-sidebar-border/60 bg-sidebar-accent/35 shadow-sm">
+            <IconLogo className={cn('size-5')} />
+          </span>
+          <span className="truncate text-sm font-semibold tracking-[-0.01em]">
+            April Engine
+          </span>
         </Link>
         <SidebarTrigger />
       </SidebarHeader>
-      <SidebarContent className="flex flex-col px-2 py-4 h-full">
-        <SidebarMenu>
+
+      <SidebarContent className="flex h-full flex-col px-2.5 py-3">
+        <SidebarMenu className="gap-1.5">
           <NewChatMenuItem />
         </SidebarMenu>
-        <div className="flex-1 overflow-y-auto">
+
+        <div className="my-3 h-px bg-sidebar-border/45" />
+
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <Suspense fallback={<ChatHistorySkeleton />}>
             <ChatHistorySection />
           </Suspense>
         </div>
       </SidebarContent>
+
+      {user && (
+        <SidebarFooter className="border-t border-sidebar-border/55 p-2.5">
+          <UserMenu user={user} variant="sidebar" />
+        </SidebarFooter>
+      )}
       <SidebarRail />
     </Sidebar>
   )
