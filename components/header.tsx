@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
                 <UserMenu user={user} />
               </div>
             ) : (
-              <GuestMenu />
+              isRootPage && <GuestMenu />
             )}
           </div>
         </div>
