@@ -3,8 +3,6 @@ import Link from 'next/link'
 
 import type { User } from '@supabase/supabase-js'
 
-import { cn } from '@/lib/utils'
-
 import {
   Sidebar,
   SidebarContent,
@@ -36,12 +34,13 @@ export default function AppSidebar({ user }: AppSidebarProps) {
       <SidebarHeader className="flex min-h-16 flex-row items-center justify-between border-b border-sidebar-border/50 px-2">
         <Link
           href="/"
-          className="group flex min-w-0 items-center gap-2.5 rounded-xl px-2 py-2 transition-colors hover:bg-sidebar-accent/45"
+          className="group flex h-10 min-w-0 items-center gap-2 rounded-xl px-2.5 transition-colors hover:bg-sidebar-accent/45"
         >
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-sidebar-border/60 bg-sidebar-accent/35 shadow-sm">
-            <IconLogo className={cn('size-5')} />
+          <span className="flex size-7 shrink-0 items-center justify-center">
+            <IconLogo className="size-6" />
           </span>
-          <span className="truncate text-sm font-semibold tracking-[-0.01em]">
+
+          <span className="truncate text-sm font-semibold leading-none tracking-[-0.01em]">
             April Engine
           </span>
         </Link>
