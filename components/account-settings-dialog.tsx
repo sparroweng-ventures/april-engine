@@ -62,7 +62,13 @@ export function AccountSettingsDialog({
   const { setTheme, theme } = useTheme()
   const [isDeleting, startDeleteTransition] = useTransition()
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleteConfirmations, setDeleteConfirmations] = useState([
+    false,
+    false,
+    false
+  ])
   const activeTheme = theme ?? 'system'
+  const canDeleteAccount = deleteConfirmations.every(Boolean)
 
   const userName =
     user.user_metadata?.full_name || user.user_metadata?.name || 'User'
@@ -109,6 +115,7 @@ export function AccountSettingsDialog({
         if (!isDeleting) {
           if (!nextOpen) {
             setConfirmOpen(false)
+            setDeleteConfirmations([false, false, false])
           }
           onOpenChange(nextOpen)
         }
@@ -198,6 +205,9 @@ export function AccountSettingsDialog({
               onOpenChange={nextOpen => {
                 if (!isDeleting) {
                   setConfirmOpen(nextOpen)
+                  if (!nextOpen) {
+                    setDeleteConfirmations([false, false, false])
+                  }
                 }
               }}
             >
@@ -213,29 +223,88 @@ export function AccountSettingsDialog({
                   Delete account
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete your account?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. Your account, chat history,
-                    and uploaded files will be permanently deleted.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel disabled={isDeleting}>
-                    Cancel
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    disabled={isDeleting}
-                    onClick={event => {
-                      event.preventDefault()
-                      handleDeleteAccount()
-                    }}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    {isDeleting ? <Spinner /> : 'Delete account'}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
+              <AlertDialogContent className="overflow-hidden border-border/70 p-0 sm:max-w-xl">
+                <div className="border-b border-border/55 bg-muted/20 px-6 pb-5 pt-6 sm:px-7">
+                  <AlertDialogHeader className="text-left">
+                    <div className="mb-1 flex items-start justify-between gap-5">
+                      <div className="min-w-0">
+                        <AlertDialogTitle className="max-w-md text-2xl font-semibold leading-tight tracking-[-0.03em]">
+                          Are you sure you want to delete your account?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="mt-2 max-w-md text-sm leading-6">
+                          Before continuing, please confirm that you understand
+                          what permanent account deletion means.
+                        </AlertDialogDescription>
+                      </div>
+
+                      <div
+                        aria-hidden="true"
+                        className="hidden size-16 shrink-0 items-center justify-center rounded-2xl border border-destructive/15 bg-destructive/[0.045] sm:flex"
+                      >
+                        <Trash2 className="size-7 text-destructive/80" />
+                      </div>
+                    </div>
+                  </AlertDialogHeader>
+                </div>
+
+                <div className="grid gap-5 px-6 py-5 sm:px-7">
+                  <div className="grid gap-2">
+                    {[
+                      'I understand that my account, chat history, notes, and uploaded files will be permanently deleted.',
+                      'I understand that this deletion cannot be undone or recovered later.',
+                      'I understand that I will be signed out immediately after my account is deleted.'
+                    ].map((label, index) => (
+                      <label
+                        key={label}
+                        className="flex cursor-pointer items-start gap-3 rounded-xl border border-border/55 bg-muted/25 px-3.5 py-3 transition-colors hover:bg-muted/40"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={deleteConfirmations[index]}
+                          disabled={isDeleting}
+                          onChange={event => {
+                            const checked = event.target.checked
+                            setDeleteConfirmations(current =>
+                              current.map((value, itemIndex) =>
+                                itemIndex === index ? checked : value
+                              )
+                            )
+                          }}
+                          className="mt-0.5 size-4 shrink-0 accent-primary"
+                        />
+                        <span className="text-xs leading-5 text-foreground/80">
+                          {label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="border-t border-border/60 pt-5">
+                    <AlertDialogFooter className="gap-2 sm:justify-end">
+                      <AlertDialogCancel
+                        disabled={isDeleting}
+                        className="rounded-full px-5"
+                      >
+                        Never mind
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        disabled={isDeleting || !canDeleteAccount}
+                        onClick={event => {
+                          event.preventDefault()
+                          handleDeleteAccount()
+                        }}
+                        className="rounded-full bg-destructive px-5 text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {isDeleting ? <Spinner /> : 'Delete my account'}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+
+                    <p className="mt-3 text-right text-[11px] leading-4 text-muted-foreground">
+                      The delete button is enabled only after all confirmations
+                      are checked.
+                    </p>
+                  </div>
+                </div>
               </AlertDialogContent>
             </AlertDialog>
           </section>
