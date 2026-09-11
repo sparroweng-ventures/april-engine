@@ -71,9 +71,13 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
                 Library
               </Button>
             )}
-            <div className="md:hidden">
-              {user ? <UserMenu user={user} /> : <GuestMenu />}
-            </div>
+            {user ? (
+              <div className="md:hidden">
+                <UserMenu user={user} />
+              </div>
+            ) : (
+              <GuestMenu />
+            )}
           </div>
         </div>
       </header>
