@@ -8,13 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils/index'
 
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
 import { IconLogo } from '@/components/ui/icons'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -43,7 +36,6 @@ export function LoginForm({
         password
       })
       if (error) throw error
-      // Redirect to root and refresh to ensure server components get updated session
       router.push('/')
       router.refresh()
     } catch (error: unknown) {
@@ -76,87 +68,119 @@ export function LoginForm({
   }
 
   return (
-    <div
-      className={cn('flex flex-col items-center gap-6', className)}
-      {...props}
-    >
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl flex flex-col items-center justify-center gap-4">
-            <IconLogo className="size-12" />
-            Welcome back
-          </CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-4">
-            <Button
-              variant="outline"
-              type="button"
-              className="w-full"
-              onClick={handleSocialLogin}
-              disabled={isLoading}
+    <div className={cn('w-full', className)} {...props}>
+      <div className="mb-10 flex items-center gap-2.5">
+        <IconLogo className="size-7" />
+        <span className="text-[15px] font-semibold tracking-[-0.02em]">
+          April Engine
+        </span>
+      </div>
+
+      <div className="mb-8">
+        <h1 className="text-4xl font-semibold tracking-[-0.045em] text-foreground sm:text-[42px]">
+          Welcome back
+        </h1>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Sign in to continue researching with April Engine.
+        </p>
+      </div>
+
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm font-medium">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="h-11 rounded-xl bg-background/70 px-4"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-4">
+            <Label htmlFor="password" className="text-sm font-medium">
+              Password
+            </Label>
+            <Link
+              href="/auth/forgot-password"
+              className="text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
-              Sign In with Google
-            </Button>
-
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-muted px-2 text-muted-foreground">Or</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleLogin} className="flex flex-col gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <PasswordInput
-                  id="password"
-                  type="password"
-                  placeholder="********"
-                  required
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Logging in...' : 'Sign In'}
-              </Button>
-            </form>
-          </div>
-          <div className="mt-6 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <Link href="/auth/sign-up" className="underline underline-offset-4">
-              Sign Up
+              Forgot password?
             </Link>
           </div>
-        </CardContent>
-      </Card>
-      <div className="text-center text-xs text-muted-foreground">
-        <Link href="/" className="hover:underline">
-          &larr; Back to Home
+          <PasswordInput
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="h-11 rounded-xl bg-background/70 px-4 pr-11"
+          />
+        </div>
+
+        {error && (
+          <div
+            role="alert"
+            className="rounded-xl border border-destructive/20 bg-destructive/5 px-3.5 py-3 text-sm text-destructive"
+          >
+            {error}
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          className="h-11 w-full rounded-xl text-sm font-medium"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Logging in...' : 'Continue'}
+        </Button>
+      </form>
+
+      <div className="my-6 flex items-center gap-3">
+        <div className="h-px flex-1 bg-border" />
+        <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          Or
+        </span>
+        <div className="h-px flex-1 bg-border" />
+      </div>
+
+      <Button
+        variant="outline"
+        type="button"
+        className="h-11 w-full rounded-xl bg-background/50"
+        onClick={handleSocialLogin}
+        disabled={isLoading}
+      >
+        <span
+          aria-hidden="true"
+          className="mr-2 inline-flex size-5 items-center justify-center rounded-full bg-background text-xs font-semibold shadow-sm"
+        >
+          G
+        </span>
+        Continue with Google
+      </Button>
+
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{' '}
+        <Link
+          href="/auth/sign-up"
+          className="font-medium text-foreground underline-offset-4 hover:underline"
+        >
+          Create one
+        </Link>
+      </p>
+
+      <div className="mt-10 text-center text-xs text-muted-foreground">
+        <Link href="/" className="underline-offset-4 hover:text-foreground hover:underline">
+          ← Back to home
         </Link>
       </div>
     </div>
