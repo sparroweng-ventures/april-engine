@@ -322,7 +322,10 @@ export function ResearchProcessSection({
       {segments.map((seg, sidx) => {
         const groups = groupConsecutiveParts(seg)
         const isSingle = groups.length === 1 && groups[0].length === 1
-        const containerClass = cn(!isSingle && 'rounded-xl border border-border/60 bg-card/50 shadow-sm overflow-hidden')
+        const containerClass = cn(
+          !isSingle &&
+            'overflow-hidden rounded-2xl border border-border/55 bg-card/35 p-1 shadow-[0_1px_2px_rgba(0,0,0,0.02)] backdrop-blur-sm'
+        )
 
         // Count total parts in this segment
         const totalParts = seg.length
@@ -380,7 +383,7 @@ export function ResearchProcessSection({
               <CollapsibleTrigger asChild>
                 <button
                   type="button"
-                  className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent/50 group"
+                  className="group flex items-center gap-2 rounded-xl border border-border/50 bg-card/35 px-3 py-2 text-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-colors hover:bg-card/70"
                 >
                   <Waypoints className="size-4 text-primary/70 group-hover:text-primary" />
                   <span className="font-medium text-foreground/75 group-hover:text-foreground">
