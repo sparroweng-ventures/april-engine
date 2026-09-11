@@ -267,24 +267,29 @@ export function AnswerSection({
       showIcon={false}
     >
       {content && (
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground/70">
-            <span className="size-1.5 rounded-full bg-primary" />
-            Answer
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/65">
+              <span className="size-1.5 rounded-full bg-primary shadow-[0_0_0_3px_hsl(var(--primary)/0.10)]" />
+              Answer
+            </div>
+            <div className="h-px flex-1 bg-gradient-to-r from-border/55 to-transparent" />
           </div>
           <div
             ref={contentRef}
             onMouseUp={updateSelection}
             onKeyUp={updateSelection}
-            className="border-l-2 border-primary/20 pl-4 md:pl-5"
+            className="rounded-2xl border border-border/45 bg-card/25 px-4 py-4 shadow-[0_1px_2px_rgba(0,0,0,0.02)] md:px-5 md:py-5"
           >
-            <MarkdownMessage message={content} citationMaps={citationMaps} />
+            <div className="border-l-2 border-primary/20 pl-4 md:pl-5">
+              <MarkdownMessage message={content} citationMaps={citationMaps} />
+            </div>
           </div>
           {selection &&
             (showSelectionSaveButton || showSelectionDeepDiveButton) && (
               <div
                 data-selection-actions
-                className="fixed z-40 flex items-center gap-1 rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+                className="fixed z-40 flex items-center gap-1 rounded-xl border border-border/70 bg-popover/95 p-1.5 text-popover-foreground shadow-lg backdrop-blur-md"
                 style={{ top: selection.top, left: selection.left }}
                 onMouseDown={event => event.preventDefault()}
               >
@@ -316,6 +321,7 @@ export function AnswerSection({
               </div>
             )}
           <MessageActions
+            className="rounded-xl border border-border/40 bg-background/20 px-2 py-1.5"
             message={content} // Provide original message; copy path remaps citations
             messageId={messageId}
             traceId={metadata?.traceId}
