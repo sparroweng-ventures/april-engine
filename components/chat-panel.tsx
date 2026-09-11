@@ -445,9 +445,7 @@ export function ChatPanel({
           />
 
           <div className="relative z-10 mb-7 flex flex-col items-center gap-4 text-center md:mb-8">
-            <div className="flex size-12 md:size-14 items-center justify-center rounded-2xl border border-border/70 bg-card/60 shadow-sm backdrop-blur-sm">
-              <IconBlinkingLogo className="size-8 md:size-9" />
-            </div>
+            <IconBlinkingLogo className="size-14 md:size-16" />
 
             <div className="space-y-3">
               <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.22em] text-primary/80">
