@@ -80,15 +80,23 @@ export function SearchSection({
       isLoading={isLoading && (isToolLoading || isSearching)}
       ariaExpanded={isOpen}
       label={
-        <div className="flex items-center gap-2 min-w-0 overflow-hidden">
-          <SearchIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
-          <span className="truncate block min-w-0 max-w-full">{`${query}${includeDomainsString}`}</span>
+        <div className="flex min-w-0 items-center gap-2.5 overflow-hidden">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-background/70">
+            <SearchIcon className="size-3.5 text-primary/75" />
+          </span>
+          <div className="min-w-0">
+            <span className="block truncate text-[13px] font-medium leading-5 text-foreground/82">{`${query}${includeDomainsString}`}</span>
+          </div>
         </div>
       }
       meta={
         searchResults && totalResults > 0 ? (
           <div className="flex items-center gap-2">
-            <StatusIndicator icon={Check} iconClassName="text-green-500">
+            <StatusIndicator
+              icon={Check}
+              iconClassName="text-primary/75"
+              className="rounded-full border border-border/45 bg-background/65 px-2 py-0.5 text-[11px]"
+            >
               {totalResults} results
             </StatusIndicator>
             {searchResults.results && searchResults.results.length > 0 && (
@@ -106,10 +114,10 @@ export function SearchSection({
       {borderless && (
         <>
           {!isFirst && (
-            <div className="absolute left-[19.5px] w-px bg-border h-2 top-0" />
+            <div className="absolute left-[18px] top-0 h-2 w-px bg-border/45" />
           )}
           {!isLast && (
-            <div className="absolute left-[19.5px] w-px bg-border h-2 bottom-0" />
+            <div className="absolute bottom-0 left-[18px] h-2 w-px bg-border/45" />
           )}
         </>
       )}
@@ -121,18 +129,19 @@ export function SearchSection({
         onOpenChange={onOpenChange}
         showIcon={false}
         showBorder={!borderless}
-        variant="default"
+        variant={borderless ? 'process-sub' : 'default'}
         showSeparator={false}
+        chevronSize="sm"
         headerClickBehavior="split"
       >
         <div className="flex">
           {/* Rail space - always reserved when grouped */}
           {borderless && (
             <>
-              <div className="w-[16px] shrink-0 flex justify-center">
+              <div className="flex w-[14px] shrink-0 justify-center">
                 <div
                   className={cn(
-                    'w-px bg-border/50 transition-opacity duration-200',
+                    'w-px bg-border/35 transition-opacity duration-200',
                     isOpen ? 'opacity-100' : 'opacity-0'
                   )}
                   style={{
