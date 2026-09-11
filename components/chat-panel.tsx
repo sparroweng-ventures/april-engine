@@ -445,7 +445,9 @@ export function ChatPanel({
           />
 
           <div className="relative z-10 mb-7 flex flex-col items-center gap-4 text-center md:mb-8">
-            <IconBlinkingLogo className="size-14 md:size-16" />
+            <div className="flex size-12 md:size-14 items-center justify-center rounded-2xl border border-border/70 bg-card/60 shadow-sm backdrop-blur-sm">
+              <IconBlinkingLogo className="size-8 md:size-9" />
+            </div>
 
             <div className="space-y-3">
               <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.22em] text-primary/80">
@@ -610,9 +612,9 @@ export function ChatPanel({
 
         <div
   className={cn(
-    'relative flex w-full flex-col gap-0 overflow-visible rounded-[30px] border border-border/80 bg-gradient-to-br from-card via-card to-accent/20 shadow-[0_18px_50px_rgba(20,24,10,0.10)] transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#1B2413] dark:shadow-[0_20px_60px_rgba(0,0,0,0.22)]',
+    'relative flex w-full flex-col gap-0 overflow-hidden rounded-[26px] border border-border/75 bg-gradient-to-br from-card via-card to-accent/15 shadow-[0_14px_38px_rgba(20,24,10,0.09)] transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#182112] dark:shadow-[0_16px_46px_rgba(0,0,0,0.20)]',
     isInputFocused &&
-      'border-primary/45 shadow-[0_22px_75px_rgba(132,158,22,0.14)] ring-1 ring-primary/15 dark:border-[#849E16]/45 dark:ring-[#849E16]/20'
+      'border-primary/40 shadow-[0_18px_52px_rgba(132,158,22,0.12)] ring-1 ring-primary/12 dark:border-[#849E16]/40 dark:ring-[#849E16]/18'
   )}
 >
           {contentCards.length > 0 && (
@@ -780,7 +782,7 @@ export function ChatPanel({
             spellCheck={false}
             value={input}
             disabled={isLoading || isToolInvocationInProgress()}
-            className="resize-none w-full min-h-16 bg-transparent border-0 px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4 text-[15px] md:text-base leading-6 text-foreground placeholder:text-muted-foreground/65 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+            className="resize-none w-full min-h-14 bg-transparent border-0 px-5 pt-4 pb-2.5 md:px-5 md:pt-4.5 md:pb-3 text-[15px] md:text-[15.5px] leading-6 text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
             onChange={handleInputChange}
             onPaste={e => {
               const text = e.clipboardData.getData('text')
@@ -849,7 +851,7 @@ export function ChatPanel({
           />
 
           {/* Bottom menu area */}
-          <div className="flex items-center justify-between border-t border-border/45 bg-background/15 px-3 py-2.5 md:px-4 md:py-3">
+          <div className="flex items-center justify-between border-t border-border/40 bg-background/10 px-3 py-2 md:px-3.5 md:py-2.5">
             <div className="flex items-center gap-1.5">
               {!isGuest && (
                 <div ref={attachmentMenuRef} className="relative">
@@ -873,7 +875,7 @@ export function ChatPanel({
                           type="button"
                           variant="outline"
                           size="icon"
-                          className="size-8 rounded-full border-border/70 bg-background/55 shadow-none transition-all hover:bg-background hover:shadow-sm"
+                          className="size-8 rounded-full border-border/60 bg-background/45 shadow-none transition-all hover:border-border hover:bg-background/80"
                           aria-label="Add"
                           aria-expanded={isAttachmentMenuOpen}
                           onClick={() => setIsAttachmentMenuOpen(open => !open)}
@@ -888,10 +890,10 @@ export function ChatPanel({
                   </TooltipProvider>
 
                   {isAttachmentMenuOpen && (
-                    <div className="absolute bottom-full left-0 z-50 mb-2 w-52 rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+                    <div className="absolute bottom-full left-0 z-50 mb-2 w-52 rounded-xl border border-border/70 bg-popover/95 p-1.5 text-popover-foreground shadow-xl backdrop-blur-md">
                       <button
                         type="button"
-                        className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
                         onClick={() => {
                           setIsAttachmentMenuOpen(false)
                           fileInputRef.current?.click()
@@ -902,7 +904,7 @@ export function ChatPanel({
                       </button>
                       <button
                         type="button"
-                        className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
+                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
                         onClick={openLibraryPicker}
                       >
                         <LibraryIcon className="size-4" />
@@ -926,7 +928,7 @@ export function ChatPanel({
                   variant="outline"
                   size="icon"
                   onClick={handleNewChat}
-                  className="shrink-0 size-8 md:size-10 rounded-full border-border/70 bg-background/55 shadow-none transition-all hover:bg-background hover:shadow-sm group"
+                  className="group size-8 shrink-0 rounded-full border-border/60 bg-background/45 shadow-none transition-all hover:border-border hover:bg-background/80 md:size-9"
                   type="button"
                   disabled={isLoading}
                 >
@@ -938,7 +940,7 @@ export function ChatPanel({
                 size={'icon'}
                 className={cn(
                   isLoading && 'animate-pulse',
-                  'size-8 md:size-10 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-sm hover:from-primary/90 hover:to-primary/70'
+                  'size-8 md:size-9 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-sm transition-transform duration-150 hover:scale-[1.03] hover:from-primary/90 hover:to-primary/70'
                 )}
                 disabled={
                   (!hasPendingInput && !isLoading) || !hasAvailableModels
