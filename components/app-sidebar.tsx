@@ -34,13 +34,13 @@ export default function AppSidebar({ user }: AppSidebarProps) {
       <SidebarHeader className="flex min-h-16 flex-row items-center justify-between border-b border-sidebar-border/50 px-2">
         <Link
           href="/"
-          className="group flex h-10 min-w-0 items-center gap-2 rounded-xl px-2.5 transition-colors hover:bg-sidebar-accent/45"
+          className="group flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl px-2.5 transition-colors hover:bg-sidebar-accent/45"
         >
-          <span className="flex size-7 shrink-0 items-center justify-center">
-            <IconLogo className="size-6" />
+          <span className="flex size-8 shrink-0 items-center justify-center">
+            <IconLogo className="size-8 -translate-y-px" />
           </span>
 
-          <span className="truncate text-sm font-semibold leading-none tracking-[-0.01em]">
+          <span className="whitespace-nowrap text-[15px] font-semibold leading-5 tracking-[-0.01em]">
             April Engine
           </span>
         </Link>
