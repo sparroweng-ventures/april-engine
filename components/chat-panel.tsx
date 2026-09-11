@@ -612,7 +612,7 @@ export function ChatPanel({
 
         <div
   className={cn(
-    'relative flex w-full flex-col gap-0 overflow-hidden rounded-[26px] border border-border/75 bg-gradient-to-br from-card via-card to-accent/15 shadow-[0_14px_38px_rgba(20,24,10,0.09)] transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#182112] dark:shadow-[0_16px_46px_rgba(0,0,0,0.20)]',
+    'relative flex w-full flex-col gap-0 overflow-visible rounded-[26px] border border-border/75 bg-gradient-to-br from-card via-card to-accent/15 shadow-[0_14px_38px_rgba(20,24,10,0.09)] transition-all duration-[180ms] ease-[var(--motion-ease-out)] dark:border-white/[0.08] dark:from-[#151B12] dark:via-[#12170F] dark:to-[#182112] dark:shadow-[0_16px_46px_rgba(0,0,0,0.20)]',
     isInputFocused &&
       'border-primary/40 shadow-[0_18px_52px_rgba(132,158,22,0.12)] ring-1 ring-primary/12 dark:border-[#849E16]/40 dark:ring-[#849E16]/18'
   )}
