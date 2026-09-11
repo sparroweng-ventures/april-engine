@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
         {/* This div can be used for a logo or title on the left if needed */}
         <div></div>
 
-        <div className="flex items-center gap-2">
+        <div className="mr-3 flex items-center gap-2 md:mr-4">
           {isRootPage && (
             <Button
               variant="outline"
