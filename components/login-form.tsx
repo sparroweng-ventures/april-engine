@@ -69,9 +69,9 @@ export function LoginForm({
 
   return (
     <div className={cn('w-full', className)} {...props}>
-      <div className="mb-10 flex items-center gap-2.5">
-        <IconLogo className="size-7" />
-        <span className="text-[15px] font-semibold tracking-[-0.02em]">
+      <div className="mb-10 flex h-8 items-center gap-2.5">
+        <IconLogo className="size-8 shrink-0 -translate-y-px" />
+        <span className="whitespace-nowrap text-[15px] font-semibold leading-5 tracking-[-0.02em]">
           April Engine
         </span>
       </div>
