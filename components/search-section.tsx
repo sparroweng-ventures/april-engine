@@ -95,7 +95,6 @@ export function SearchSection({
             <StatusIndicator
               icon={Check}
               iconClassName="text-primary/75"
-              className="rounded-full border border-border/45 bg-background/65 px-2 py-0.5 text-[11px]"
             >
               {totalResults} results
             </StatusIndicator>
