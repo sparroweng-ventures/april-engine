@@ -17,16 +17,16 @@ export const SEARCH_MODE_CONFIGS: SearchModeConfig[] = [
   {
     value: 'quick',
     label: 'Quick',
-    description: 'Streamlined search for fast, concise responses',
+    description: 'Fast, polished answers with current web sources',
     icon: Search,
     color: 'text-amber-500'
   },
   {
     value: 'adaptive',
-    label: 'Adaptive',
-    description: 'Adaptive agentic search with intelligent query understanding',
+    label: 'Deep Research',
+    description: 'Thorough multi-source research with deeper reasoning',
     icon: IconLogoOutline,
-    color: 'text-violet-500'
+    color: 'text-primary'
   }
 ]
 
