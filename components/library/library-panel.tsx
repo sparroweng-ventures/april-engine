@@ -56,7 +56,7 @@ import { MarkdownMessage } from '@/components/message'
 import { useLibrary } from './library-context'
 
 const LIBRARY_CACHE_TTL_MS = 60_000
-const LIBRARY_PAGE_SIZE = 25
+const LIBRARY_PAGE_SIZE = 12
 
 type LibraryTab = 'all' | 'notes' | 'files'
 type DeleteTarget =
@@ -165,6 +165,8 @@ export function LibraryPanel() {
     replaceFilesCache,
     appendNotesCache,
     appendFilesCache,
+    upsertCachedNote,
+    upsertCachedFile,
     removeCachedNote,
     removeCachedFile
   } = useLibrary()
@@ -447,7 +449,7 @@ export function LibraryPanel() {
       ? isLoading
       : activeTab === 'files'
         ? isFilesLoading
-        : isLoading || isFilesLoading
+        : isLoading && isFilesLoading
   const emptyMessage =
     activeTab === 'notes'
       ? 'No notes yet.'
@@ -538,13 +540,38 @@ export function LibraryPanel() {
     if (!deleteTarget) return
 
     const target = deleteTarget
+    const wasSelected =
+      target.kind === 'note'
+        ? selectedNote?.id === target.item.id
+        : selectedFile?.id === target.item.id
+
     setDeleteTarget(null)
+
+    // Remove the item from the visible Library immediately. The server delete
+    // still runs in the background, and a failed delete restores the item.
+    if (target.kind === 'note') {
+      removeCachedNote(target.item.id)
+      if (wasSelected) setSelectedNote(null)
+    } else {
+      removeCachedFile(target.item.id)
+      if (wasSelected) setSelectedFile(null)
+    }
+
     startDeleteTransition(async () => {
       const result =
         target.kind === 'note'
           ? await deleteNote(target.item.id)
           : await deleteFile(target.item.id)
+
       if (!result.success) {
+        if (target.kind === 'note') {
+          upsertCachedNote(target.item)
+          if (wasSelected) setSelectedNote(target.item)
+        } else {
+          upsertCachedFile(target.item)
+          if (wasSelected) setSelectedFile(target.item)
+        }
+
         captureClient(
           target.kind === 'note'
             ? 'note_delete_failed'
@@ -565,19 +592,6 @@ export function LibraryPanel() {
       toast.success(
         target.kind === 'note' ? 'Note deleted' : 'File removed from Library'
       )
-      if (target.kind === 'note' && selectedNote?.id === target.item.id) {
-        setSelectedNote(null)
-      } else if (
-        target.kind === 'file' &&
-        selectedFile?.id === target.item.id
-      ) {
-        setSelectedFile(null)
-      }
-      if (target.kind === 'note') {
-        removeCachedNote(target.item.id)
-      } else {
-        removeCachedFile(target.item.id)
-      }
     })
   }
 
