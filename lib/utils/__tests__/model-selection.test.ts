@@ -71,7 +71,7 @@ describe('selectModel', () => {
     expect(result).toEqual(quickModel)
   })
 
-  it('falls back to the next mode when active mode provider is disabled', async () => {
+  it('does not switch cloud modes when the active mode provider is disabled', async () => {
     mockIsProviderEnabled.mockImplementation(providerId =>
       providerId === 'provider-a' ? false : true
     )
@@ -81,7 +81,7 @@ describe('selectModel', () => {
       cookieStore: createCookieStore()
     })
 
-    expect(result).toEqual(adaptiveModel)
+    expect(result).toBeNull()
   })
 
   it('falls back to quick mode when search mode is omitted', async () => {
@@ -89,17 +89,17 @@ describe('selectModel', () => {
     expect(result).toEqual(quickModel)
   })
 
-  it('falls back to DEFAULT_MODEL when cloud models are unavailable', async () => {
+  it('returns null when the configured cloud model is unavailable', async () => {
     matrix = {}
     setMatrixImplementation()
     const result = await selectModel({
       searchMode: 'quick',
       cookieStore: createCookieStore()
     })
-    expect(result).toEqual(DEFAULT_MODEL)
+    expect(result).toBeNull()
   })
 
-  it('falls back to DEFAULT_MODEL when configured providers are disabled', async () => {
+  it('returns null when the configured cloud provider is disabled', async () => {
     mockIsProviderEnabled.mockImplementation(providerId =>
       providerId === 'provider-a' || providerId === 'provider-b' ? false : true
     )
@@ -109,7 +109,7 @@ describe('selectModel', () => {
       cookieStore: createCookieStore()
     })
 
-    expect(result).toEqual(DEFAULT_MODEL)
+    expect(result).toBeNull()
   })
 
   it('returns cookie-selected model in local/docker mode', async () => {
