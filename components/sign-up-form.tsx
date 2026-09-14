@@ -53,7 +53,6 @@ export function SignUpForm({
     }
   }
 
-
   const handleSocialLogin = async () => {
     const supabase = createClient()
     setIsLoading(true)
@@ -78,15 +77,15 @@ export function SignUpForm({
 
   return (
     <div className={cn('w-full', className)} {...props}>
-      <div className="mb-10 flex h-8 items-center gap-2.5">
+      <div className="mb-6 flex h-8 items-center gap-2.5">
         <IconLogo className="size-8 shrink-0 -translate-y-px" />
         <span className="whitespace-nowrap text-[15px] font-semibold leading-5 tracking-[-0.02em]">
           April Engine
         </span>
       </div>
 
-      <div className="mb-8">
-        <h1 className="text-4xl font-semibold tracking-[-0.045em] text-foreground sm:text-[42px]">
+      <div className="mb-6">
+        <h1 className="text-4xl font-semibold tracking-[-0.045em] text-foreground sm:text-[40px]">
           Create an account
         </h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -94,7 +93,7 @@ export function SignUpForm({
         </p>
       </div>
 
-      <form onSubmit={handleSignUp} className="space-y-4">
+      <form onSubmit={handleSignUp} className="space-y-3">
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium">
             Email
@@ -161,7 +160,7 @@ export function SignUpForm({
         </Button>
       </form>
 
-      <div className="my-6 flex items-center gap-3">
+      <div className="my-4 flex items-center gap-3">
         <div className="h-px flex-1 bg-border" />
         <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           Or
@@ -185,7 +184,7 @@ export function SignUpForm({
         Continue with Google
       </Button>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-5 text-center text-sm text-muted-foreground">
         Already have an account?{' '}
         <Link
           href="/auth/login"
@@ -195,8 +194,11 @@ export function SignUpForm({
         </Link>
       </p>
 
-      <div className="mt-10 text-center text-xs text-muted-foreground">
-        <Link href="/" className="underline-offset-4 hover:text-foreground hover:underline">
+      <div className="mt-6 text-center text-xs text-muted-foreground">
+        <Link
+          href="/"
+          className="underline-offset-4 hover:text-foreground hover:underline"
+        >
           ← Back to home
         </Link>
       </div>
