@@ -434,34 +434,16 @@ export function ChatPanel({
         'relative isolate w-full bg-transparent group/form-container shrink-0',
         messages.length > 0
           ? 'sticky bottom-0 px-2 pb-2 md:pb-4'
-          : 'px-4 pt-10 pb-8 md:px-6 md:pt-14 md:pb-12'
+          : 'px-4 pt-8 pb-8 md:px-6 md:pt-10 md:pb-10'
       )}
     >
       {messages.length === 0 && (
-        <>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-[25rem] z-0 h-[30rem] w-[min(72rem,120vw)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(132,158,22,0.10),transparent_68%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(132,158,22,0.08),transparent_68%)]"
-          />
-
-          <div className="relative z-10 mb-7 flex flex-col items-center gap-4 text-center md:mb-8">
-            <IconBlinkingLogo className="size-14 md:size-16" />
-
-            <div className="space-y-3">
-              <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.22em] text-primary/80">
-                AI research engine
-              </div>
-
-              <h1 className="mx-auto max-w-3xl text-4xl md:text-6xl lg:text-7xl font-semibold leading-[0.98] tracking-[-0.045em] text-foreground">
-                What are you <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">researching?</span>
-              </h1>
-
-              <p className="mx-auto max-w-xl text-sm leading-6 text-muted-foreground md:text-base md:leading-7">
-                Search the web, compare sources, and get a cited answer.
-              </p>
-            </div>
-          </div>
-        </>
+        <div className="relative z-10 mb-6 flex flex-col items-center gap-3 text-center md:mb-7">
+          <IconBlinkingLogo className="size-10 md:size-11" />
+          <h1 className="text-3xl font-semibold leading-none tracking-[-0.035em] text-foreground md:text-4xl">
+            April Engine
+          </h1>
+        </div>
       )}
       {uploadedFiles.length > 0 && (
         <UploadedFileList files={uploadedFiles} onRemove={handleFileRemove} />
