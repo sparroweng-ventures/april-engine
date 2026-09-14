@@ -10,7 +10,11 @@ interface GenerateChatTitleParams {
 }
 
 function getTitleProviderOptions(modelId: string) {
-  if (modelId === 'openai:gpt-5.6-luna') {
+  if (
+    modelId === 'openai:gpt-5.6-luna' ||
+    modelId === 'openai:gpt-5.6-terra' ||
+    modelId === 'openai:gpt-5.6-sol'
+  ) {
     return {
       openai: {
         reasoningEffort: 'none' as const
