@@ -100,9 +100,8 @@ function resolveModelForMode(mode: SearchMode): Model | undefined {
  *
  * Priority order:
  * 1. Use cloud mode-specific model for the active mode when enabled
- * 2. If the active mode has no enabled model, try remaining modes
- * 3. Use DEFAULT_MODEL when its provider is enabled
- * 4. Return null when no enabled models are available
+ * 2. In cloud mode, return null if that exact mode model is unavailable
+ * 3. In local/docker mode, use the saved/default/fetched model behavior
  */
 export async function selectModel({
   searchMode,
@@ -145,22 +144,10 @@ export async function selectModel({
       ? searchMode
       : 'quick'
 
-  const modePreferenceOrder: SearchMode[] = Array.from(
-    new Set<SearchMode>([requestedMode, ...MODE_FALLBACK_ORDER])
-  )
-
-  for (const candidateMode of modePreferenceOrder) {
-    const model = resolveModelForMode(candidateMode)
-    if (model) {
-      return model
-    }
-  }
-
-  if (isProviderEnabled(DEFAULT_MODEL.providerId)) {
-    return DEFAULT_MODEL
-  }
-
-  return pickFirstFetchedModel(await fetchAvailableModels())
+  // Cloud deployments are intentionally pinned to the model configured for
+  // the active search mode. Never silently switch modes or fall back to an
+  // unrelated model: the public product must remain a two-model system.
+  return resolveModelForMode(requestedMode) ?? null
 }
 
 export { DEFAULT_MODEL }
