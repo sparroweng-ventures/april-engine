@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers'
 
-import { DEFAULT_MODEL } from '@/lib/config/default-model'
 import {
   MODEL_SELECTION_COOKIE,
   parseModelSelectionCookie
@@ -8,29 +7,11 @@ import {
 import { fetchAvailableModels } from '@/lib/models/fetch-models'
 import { ModelSelectorData } from '@/lib/types/model-selector'
 import { Model } from '@/lib/types/models'
-import { isProviderEnabled } from '@/lib/utils/registry'
 
 import 'server-only'
 
 function modelKey(model: Model): string {
   return `${model.providerId}:${model.id}`
-}
-
-function pickFirstAvailableModel(
-  modelsByProvider: Record<string, Model[]>
-): Model | null {
-  const providers = Object.keys(modelsByProvider).sort((a, b) =>
-    a.localeCompare(b)
-  )
-
-  for (const provider of providers) {
-    const firstModel = modelsByProvider[provider]?.[0]
-    if (firstModel) {
-      return firstModel
-    }
-  }
-
-  return null
 }
 
 function resolveSelectedModelKey(
@@ -68,10 +49,33 @@ export async function getModelSelectorData(): Promise<ModelSelectorData> {
     }
   }
 
-  const modelsByProvider = await fetchAvailableModels()
-  const fallbackModel = pickFirstAvailableModel(modelsByProvider)
-  const hasAvailableModels =
-    fallbackModel !== null || isProviderEnabled(DEFAULT_MODEL.providerId)
+  const availableModels = await fetchAvailableModels()
+
+  const allowedOpenAIModels = [
+    { id: 'gpt-5.6-terra', name: 'GPT-5.6 Terra' },
+    { id: 'gpt-5.6-sol', name: 'GPT-5.6 Sol' }
+  ]
+
+  const openAIModels = availableModels.OpenAI ?? []
+  const modelsByProvider: Record<string, Model[]> = {
+    OpenAI: allowedOpenAIModels.flatMap(allowedModel => {
+      const model = openAIModels.find(
+        candidate => candidate.id === allowedModel.id
+      )
+
+      return model
+        ? [
+            {
+              ...model,
+              name: allowedModel.name
+            }
+          ]
+        : []
+    })
+  }
+
+  const fallbackModel = modelsByProvider.OpenAI?.[0] ?? null
+  const hasAvailableModels = fallbackModel !== null
   const cookieStore = await cookies()
   const selectedModelKey = resolveSelectedModelKey(
     modelsByProvider,
