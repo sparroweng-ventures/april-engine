@@ -57,13 +57,16 @@ describe('context-window', () => {
       }
     })
 
-    test('uses the real 1.05M window for GPT-5.6 Luna', () => {
+    test('uses the real 1.05M window for GPT-5.6 models', () => {
       // (1050000 - 128000) - floor(1050000 * 0.1) = 817000
-      const maxTokens = getMaxAllowedTokens({
-        ...mockModel,
-        id: 'gpt-5.6-luna'
-      })
-      expect(maxTokens).toBe(817000)
+      for (const id of [
+        'gpt-5.6-luna',
+        'gpt-5.6-terra',
+        'gpt-5.6-sol'
+      ]) {
+        const maxTokens = getMaxAllowedTokens({ ...mockModel, id })
+        expect(maxTokens).toBe(817000)
+      }
     })
   })
 
