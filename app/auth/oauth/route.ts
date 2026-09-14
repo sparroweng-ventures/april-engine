@@ -9,11 +9,13 @@ function createRedirectResponse(request: NextRequest, next: string) {
   const forwardedHost = request.headers.get('x-forwarded-host')
   const isLocalEnv = process.env.NODE_ENV === 'development'
 
+  const safeNext = next.startsWith('/') ? next : '/'
+
   const destination = isLocalEnv
-    ? `${origin}${next}`
+    ? `${origin}${safeNext}`
     : forwardedHost
-      ? `https://${forwardedHost}${next}`
-      : `${origin}${next}`
+      ? `https://${forwardedHost}${safeNext}`
+      : `${origin}${safeNext}`
 
   const response = NextResponse.redirect(destination)
   response.headers.set('Cache-Control', 'private, no-store')
@@ -37,9 +39,10 @@ export async function GET(request: NextRequest) {
             return request.cookies.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) =>
+            cookiesToSet.forEach(({ name, value, options }) => {
+              request.cookies.set(name, value)
               response.cookies.set(name, value, options)
-            )
+            })
           }
         }
       }
