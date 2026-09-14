@@ -1,9 +1,9 @@
 {
-  "version": 2,
+  "version": 3,
   "models": {
     "quick": {
-      "id": "gpt-5.6-luna",
-      "name": "GPT-5.6 Luna",
+      "id": "gpt-5.6-terra",
+      "name": "GPT-5.6 Terra",
       "provider": "OpenAI",
       "providerId": "openai",
       "providerOptions": {
@@ -13,13 +13,13 @@
       }
     },
     "adaptive": {
-      "id": "gpt-5.6-luna",
-      "name": "GPT-5.6 Luna",
+      "id": "gpt-5.6-sol",
+      "name": "GPT-5.6 Sol",
       "provider": "OpenAI",
       "providerId": "openai",
       "providerOptions": {
         "openai": {
-          "reasoningEffort": "low",
+          "reasoningEffort": "high",
           "reasoningSummary": "auto"
         }
       }
