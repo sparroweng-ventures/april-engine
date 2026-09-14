@@ -1,7 +1,7 @@
 import type { SearchMode } from '@/lib/types/search'
 
 export const ADAPTIVE_MODE_AUTH_REQUIRED_MESSAGE =
-  'Sign in to use Adaptive mode. Quick mode remains available without an account.'
+  'Sign in to use Deep Research. Quick mode remains available without an account.'
 
 export function requiresAdaptiveModeAuth({
   isGuest,
