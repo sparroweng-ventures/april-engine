@@ -20,7 +20,7 @@ const THEME_CYCLE: Record<string, string> = {
 
 const SEARCH_MODE_LABELS: Record<SearchMode, string> = {
   quick: 'Quick',
-  adaptive: 'Adaptive'
+  adaptive: 'Deep Research'
 }
 
 export function KeyboardShortcutHandler() {
