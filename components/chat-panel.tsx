@@ -438,10 +438,16 @@ export function ChatPanel({
       )}
     >
       {messages.length === 0 && (
-        <div className="relative z-10 mb-6 flex flex-col items-center gap-3 text-center md:mb-7">
-          <IconBlinkingLogo className="size-10 md:size-11" />
-          <h1 className="text-3xl font-semibold leading-none tracking-[-0.035em] text-foreground md:text-4xl">
-            April Engine
+        <div className="relative z-10 mb-6 flex flex-col items-center gap-4 text-center md:mb-7">
+          <div className="flex items-center gap-2.5">
+            <IconBlinkingLogo className="size-9 md:size-10" />
+            <div className="text-lg font-semibold tracking-[-0.025em] text-foreground md:text-xl">
+              April Engine
+            </div>
+          </div>
+
+          <h1 className="text-2xl font-medium leading-tight tracking-[-0.025em] text-foreground/90 md:text-[2rem]">
+            What would you like to know?
           </h1>
         </div>
       )}
