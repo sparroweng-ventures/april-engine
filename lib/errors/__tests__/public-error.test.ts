@@ -70,7 +70,7 @@ describe('public error mapping', () => {
     const payload = toPublicErrorPayload(
       JSON.stringify({
         error:
-          'Daily limit for Adaptive mode reached. Please try again tomorrow, or continue in Quick mode.',
+          'Daily limit for Deep Research reached. Please try again tomorrow, or continue in Quick mode.',
         remaining: 0,
         resetAt: 1767139200000,
         limit: 30,
@@ -81,7 +81,7 @@ describe('public error mapping', () => {
     expect(payload.type).toBe('rate-limit')
     expect(payload.code).toBe('rate_limit')
     expect(payload.error).toBe(
-      'Daily limit for Adaptive mode reached. Please try again tomorrow, or continue in Quick mode.'
+      'Daily limit for Deep Research reached. Please try again tomorrow, or continue in Quick mode.'
     )
     expect(payload.mode).toBe('adaptive')
     expect(getPublicRateLimitDetails(payload)).toBe(
@@ -131,7 +131,7 @@ describe('public error mapping', () => {
       new Error(
         JSON.stringify({
           error:
-            'Sign in to use Adaptive mode. Quick mode remains available without an account.',
+            'Sign in to use Deep Research. Quick mode remains available without an account.',
           mode: 'adaptive',
           authRequired: true
         })
@@ -142,7 +142,7 @@ describe('public error mapping', () => {
     expect(payload.code).toBe('auth_required')
     expect(payload.authRequired).toBe(true)
     expect(payload.error).toBe(
-      'Sign in to use Adaptive mode. Quick mode remains available without an account.'
+      'Sign in to use Deep Research. Quick mode remains available without an account.'
     )
   })
 
